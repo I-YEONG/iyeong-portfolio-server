@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: common-api
+  config:
+    # 코어에 있는 설정을 가져옵니다
+    import: optional:classpath:application-core.yml
+
+# 주의: server는 spring과 같은 라인(루트)에 적어야 합니다!
+server:
+  port: 8080

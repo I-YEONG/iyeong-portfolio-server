@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.iyeong'
 version = '0.0.1-SNAPSHOT'
-description = 'portfolio'
+description = 'common-api'
 
 java {
     toolchain {
@@ -19,9 +19,15 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+// 1. 코어 모듈 가져오기
+    implementation project(':common:common-core')
+
+    // 2. 웹 API 기능
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // 3. 롬복
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {

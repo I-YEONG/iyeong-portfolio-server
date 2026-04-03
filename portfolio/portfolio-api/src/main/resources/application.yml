@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: portfolio-api
+  config:
+    # 코어에 있는 설정을 가져옵니다
+    import: optional:classpath:application-core.yml
+
+server:
+  port: 8081

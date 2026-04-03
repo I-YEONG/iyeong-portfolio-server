@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.4'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.iyeong'
+version = '0.0.1-SNAPSHOT'
+description = 'api'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':common:common-core')
+    implementation project(':portfolio:portfolio-domain')
+
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // 웹 서버 기능
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+}
+
+// API 서버는 실행 파일(jar)로 빌드되어야 하므로 true!
+bootJar { enabled = true }
+jar { enabled = false }
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+bootJar { enabled = false }
+jar { enabled = true }

@@ -10,12 +10,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BaseException.class)
+    // BaseException의 저장값이 있는 e를 불러와서 getMessage, getStatus를 통해 에러로 반환
     public ResponseEntity<ApiResponse<Void>> handleBaseException(BaseException e) {
-
-        ApiResponse<Void> response = ApiResponse.error(e.getStatus(), e.getMessage());
 
         return ResponseEntity
                 .status(e.getStatus())
-                .body(response);
+                .body(ApiResponse.error(e.getMessage()));
     }
 }

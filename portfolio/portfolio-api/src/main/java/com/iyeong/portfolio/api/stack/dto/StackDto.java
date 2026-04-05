@@ -1,5 +1,7 @@
 package com.iyeong.portfolio.api.stack.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 
 @Getter
@@ -12,9 +14,18 @@ public class StackDto {
 //        @Max(value = 100, message = "숙련도는 100 이하여야 합니다.")
 //        @NotBlank(message = "스택 이름은 필수입니다.") // 비어있으면 안 됨
 
+        @NotBlank(message = "이름은 비워둘 수 없습니다.")
         private String name;
+
+        @NotBlank(message = "카테고리는 비워둘 수 없습니다.")
+        @Pattern(regexp = "^(back|front|ops|etc)$", message = "카테고리는 back, front, ops, etc 중 하나여야 합니다.")
         private String category;
+
+        @NotBlank(message = "수준 항목은 비워둘 수 없습니다.")
+        @Pattern(regexp = "^(core|expert|basic)$", message = "수준은 core, expert, basic 중 하나여야 합니다.")
         private String expertise;
+
+        @NotBlank(message = "퍼센티지 항목을 비워둘 수 없습니다.")
         private Integer proficiency;
     }
 

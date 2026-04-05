@@ -15,7 +15,7 @@ public class PfStack {
     }
 
     public enum ExpertiseList {
-        core, sub
+        core, expert, basic
     }
 
     @Id // PK

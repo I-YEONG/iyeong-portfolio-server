@@ -15,7 +15,7 @@ public class StackApiService {
 
     private final StackDomainService stackDomainService;
 
-    // 1. 스택 추가
+    // post
     public void createStack(StackDto.Request request) {
         PfStack pfStack = PfStack.builder()
                 .name(request.getName())
@@ -27,7 +27,7 @@ public class StackApiService {
         stackDomainService.saveStack(pfStack);
     }
 
-    // 🌟 2. 전체 조회 (컨트롤러가 애타게 찾던 그 메서드입니다!)
+    // get
     public List<StackDto.Response> getAllStacks() {
         // 도메인 서비스에서 전체 스택(엔티티)을 가져옵니다.
         List<PfStack> stackList = stackDomainService.getAllStacks();
@@ -44,7 +44,7 @@ public class StackApiService {
                 .collect(Collectors.toList());
     }
 
-    // 🌟 3. 스택 삭제 (이것도 추가되었습니다!)
+    // delete
     public void deleteStack(Long stackId) {
         stackDomainService.deleteStack(stackId);
     }

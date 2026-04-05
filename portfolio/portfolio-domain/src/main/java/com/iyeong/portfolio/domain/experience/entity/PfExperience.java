@@ -1,12 +1,14 @@
 package com.iyeong.portfolio.domain.experience.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
 
 @Getter
 @Entity
+@Builder
 @Table(name = "pf_experience") // DB에 "pf_experience"으로 생성
 public class PfExperience {
 
@@ -31,7 +33,7 @@ public class PfExperience {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ActivityType type; // [ 해커톤, 강의 수료, 동아리, 프로젝트, 개인 ]
+    private ActivityType type; // [ 해커톤, 강의, 동아리, 프로젝트, 개인, 알바, 인턴 ]
 
     // TEXT
     @Column(nullable = false, columnDefinition = "TEXT")
@@ -43,13 +45,23 @@ public class PfExperience {
     @Column(nullable = false)
     private LocalDate endDate;
 
-    @Column(nullable = false)
-    private String note; // 비고
+    @Column(nullable = true)
+    private String note = null; // 비고
 
     protected PfExperience() {}
 
     // 생성자
     public PfExperience( String title, ActivityType type, String detail, LocalDate startDate, LocalDate endDate, String note) {
+        this.title = title;
+        this.type = type;
+        this.detail = detail;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.note = note;
+    }
+
+    // 업데이트 메서드
+    public  void update( String title, ActivityType type, String detail, LocalDate startDate, LocalDate endDate, String note) {
         this.title = title;
         this.type = type;
         this.detail = detail;

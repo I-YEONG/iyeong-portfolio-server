@@ -1,12 +1,14 @@
 package com.iyeong.portfolio.domain.certification.entity;
 
 import jakarta.persistence.*; // DB 연결 도구 불러오기
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
 
 @Getter
 @Entity
+@Builder
 @Table(name = "pf_certification") // DB에 "pf_certification"으로 생성
 public class PfCertification {
 
@@ -20,11 +22,9 @@ public class PfCertification {
     @Column(nullable = false)
     private String organization; // 발행 기관
 
-    @Column(nullable = false)
     private Boolean status = true;
 
-    @Column(nullable = false)
-    private LocalDate acquiredDate;
+    private LocalDate acquiredDate = null;
 
     private String logoUrl;
 
@@ -37,5 +37,14 @@ public class PfCertification {
          this.status = status;
          this.acquiredDate = acquiredDate;
          this.logoUrl = logoUrl;
+    }
+
+    // 업데이트 메서드
+    public void update(String name, String organization, Boolean status, LocalDate acquiredDate, String logoUrl) {
+        this.name = name;
+        this.organization = organization;
+        this.status = status;
+        this.acquiredDate = acquiredDate;
+        this.logoUrl = logoUrl;
     }
 }

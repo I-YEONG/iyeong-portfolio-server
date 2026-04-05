@@ -12,7 +12,7 @@ import com.iyeong.common.core.response.ApiResponse;
 
 @RestController // JSON 형태로 응답하는 컨트롤러
 @RequiredArgsConstructor
-@RequestMapping("/api/stacks") // 모든 주소가 "/api/stacks"로 시작하도록 설정
+@RequestMapping("/api/stack")
 public class StackController {
 
     private final StackApiService stackApiService;

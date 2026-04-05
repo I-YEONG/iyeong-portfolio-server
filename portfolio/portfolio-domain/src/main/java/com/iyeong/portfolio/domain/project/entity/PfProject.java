@@ -1,4 +1,4 @@
-package com.iyeong.portfolio.domain.entity;
+package com.iyeong.portfolio.domain.project.entity;
 
 import jakarta.persistence.*; // DB 연결 도구 불러오기
 import lombok.Getter;
@@ -72,6 +72,9 @@ public class PfProject {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PfProjectImage> images = new ArrayList<>();
 
+    // 관계 설정 - detail
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PfProjectDetail> details = new ArrayList<>();
 
 
     protected PfProject(){};
@@ -109,6 +112,11 @@ public class PfProject {
     // 연관관계 메서드 - image
     public void addImage(PfProjectImage image) {
         this.images.add(image);
+    }
+
+    // 연관관계 메서드 - image
+    public void addDetail(PfProjectDetail detail) {
+        this.details.add(detail);
     }
 
 

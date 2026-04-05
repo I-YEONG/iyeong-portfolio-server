@@ -1,4 +1,4 @@
-package com.iyeong.portfolio.domain.entity;
+package com.iyeong.portfolio.domain.certification.entity;
 
 import jakarta.persistence.*; // DB 연결 도구 불러오기
 import lombok.Getter;

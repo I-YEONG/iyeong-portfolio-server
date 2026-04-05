@@ -1,4 +1,4 @@
-package com.iyeong.portfolio.domain.entity;
+package com.iyeong.portfolio.domain.experience.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

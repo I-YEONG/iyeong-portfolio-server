@@ -1,14 +1,15 @@
 package com.iyeong.portfolio.domain.experience.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Getter
 @Entity
 @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // 🌟 JPA를 위한 기본 생성자 (필수)
+@AllArgsConstructor // 🌟 @Builder를 위한 전체 생성자 (필수)
 @Table(name = "pf_experience") // DB에 "pf_experience"으로 생성
 public class PfExperience {
 
@@ -46,19 +47,8 @@ public class PfExperience {
     private LocalDate endDate;
 
     @Column(nullable = true)
-    private String note = null; // 비고
+    private String note = ""; // 비고
 
-    protected PfExperience() {}
-
-    // 생성자
-    public PfExperience( String title, ActivityType type, String detail, LocalDate startDate, LocalDate endDate, String note) {
-        this.title = title;
-        this.type = type;
-        this.detail = detail;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.note = note;
-    }
 
     // 업데이트 메서드
     public  void update( String title, ActivityType type, String detail, LocalDate startDate, LocalDate endDate, String note) {

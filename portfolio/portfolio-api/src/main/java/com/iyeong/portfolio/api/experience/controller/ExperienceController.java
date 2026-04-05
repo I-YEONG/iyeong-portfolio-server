@@ -6,6 +6,7 @@ import com.iyeong.portfolio.api.experience.dto.ExperienceDto;
 import com.iyeong.portfolio.api.experience.service.ExperienceApiService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,22 +19,22 @@ public class ExperienceController {
 
     private final ExperienceApiService experienceApiService;
 
-    // 1. 자격증 추가 (POST)
+    // 1. 교외활동 추가 (POST)
     @PostMapping
-    public ResponseEntity<ApiResponse<Void>> createExperience(@Valid @RequestBody ExperienceDto.Request request) {
+    public ResponseEntity<ApiResponse<ExperienceDto.Response>> createExperience(@Valid @RequestBody ExperienceDto.Request request) {
 
-        experienceApiService.createExperience(request);
-        return ResponseEntity.ok(ApiResponse.success("스택이 성공적으로 등록되었습니다.", null));
+        ExperienceDto.Response resData = experienceApiService.createExperience(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success("교외활동이 성공적으로 등록되었습니다.", resData));
     }
 
-    // 2. 자격증 전체 조회 (GET)
+    // 2. 교외활동 전체 조회 (GET)
     @GetMapping
     public ResponseEntity<ApiResponse<List<ExperienceDto.Response>>> getAllExperiences() {
         List<ExperienceDto.Response> experiences = experienceApiService.getAllExperiences();
-        return ResponseEntity.ok(ApiResponse.success("스택 목록 조회 성공", experiences));
+        return ResponseEntity.ok(ApiResponse.success("교외활동 목록 조회 성공", experiences));
     }
 
-    // 3. 자격증 수정 (PUT)
+    // 3. 교외활동 수정 (PUT)
     @PutMapping("/{experienceId}")
     public ResponseEntity<ApiResponse<Void>> updateExperience(
             @PathVariable Long experienceId,
@@ -45,14 +46,14 @@ public class ExperienceController {
         }
 
         experienceApiService.updateExperience(request);
-        return ResponseEntity.ok(ApiResponse.success("자격증이 성공적으로 수정되었습니다.", null));
+        return ResponseEntity.ok(ApiResponse.success("교외활동이 성공적으로 수정되었습니다.", null));
     }
 
-    // 4. 자격증 삭제 (DELETE)
+    // 4. 교외활동 삭제 (DELETE)
     @DeleteMapping("/{experienceId}")
     public ResponseEntity<ApiResponse<Void>> deleteStack(@Valid @PathVariable Long experienceId) {
         experienceApiService.deleteExperience(experienceId);
-        return ResponseEntity.ok(ApiResponse.success("스택이 성공적으로 삭제되었습니다.", null));
+        return ResponseEntity.ok(ApiResponse.success("교외활동이 성공적으로 삭제되었습니다.", null));
     }
 
 }

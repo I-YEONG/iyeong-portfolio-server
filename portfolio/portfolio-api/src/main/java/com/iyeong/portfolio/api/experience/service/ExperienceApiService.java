@@ -16,7 +16,7 @@ public class ExperienceApiService {
     private final ExperienceDomainService experienceDomainService;
 
     // post
-    public void createExperience(ExperienceDto.Request request) {
+    public ExperienceDto.Response createExperience(ExperienceDto.Request request) {
         PfExperience pfExperience = PfExperience.builder()
                 .title(request.getTitle())
                 .type(PfExperience.ActivityType.valueOf(request.getType()))
@@ -26,7 +26,16 @@ public class ExperienceApiService {
                 .note(request.getNote())
                 .build();
 
-        experienceDomainService.saveExperience(pfExperience);
+        PfExperience savedExperience =  experienceDomainService.saveExperience(pfExperience);
+        return new ExperienceDto.Response(
+                savedExperience.getId(),
+                savedExperience.getTitle(),
+                savedExperience.getType().name(),
+                savedExperience.getDetail(),
+                savedExperience.getStartDate(),
+                savedExperience.getEndDate(),
+                savedExperience.getNote()
+        );
     }
 
     // get

@@ -1,7 +1,6 @@
 package com.iyeong.portfolio.api.stack.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 
 @Getter
@@ -25,7 +24,9 @@ public class StackDto {
         @Pattern(regexp = "^(core|expert|basic)$", message = "수준은 core, expert, basic 중 하나여야 합니다.")
         private String expertise;
 
-        @NotBlank(message = "퍼센티지 항목을 비워둘 수 없습니다.")
+        @NotNull(message = "퍼센티지 항목을 비워둘 수 없습니다.")
+        @Min(value = 0, message = "0~100 사이 값이 필요합니다")
+        @Max(value = 100, message = "0~100 사이 값이 필요합니다")
         private Integer proficiency;
     }
 

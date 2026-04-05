@@ -16,7 +16,7 @@ public class StackApiService {
     private final StackDomainService stackDomainService;
 
     // post
-    public void createStack(StackDto.Request request) {
+    public StackDto.Response createStack(StackDto.Request request) {
         PfStack pfStack = PfStack.builder()
                 .name(request.getName())
                 .category(PfStack.CategoryList.valueOf(request.getCategory()))
@@ -24,7 +24,15 @@ public class StackApiService {
                 .proficiency(request.getProficiency())
                 .build();
 
-        stackDomainService.saveStack(pfStack);
+        PfStack savedStack =  stackDomainService.saveStack(pfStack);
+
+        return new StackDto.Response(
+                savedStack.getId(), // 이제 null이 아니라 DB에서 준 숫자(예: 1, 2, 3...)가 들어있습니다!
+                savedStack.getName(),
+                savedStack.getCategory().name(),
+                savedStack.getExpertise().name(),
+                savedStack.getProficiency()
+        );
     }
 
     // get

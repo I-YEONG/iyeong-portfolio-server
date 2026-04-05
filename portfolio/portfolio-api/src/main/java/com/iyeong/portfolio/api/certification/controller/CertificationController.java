@@ -6,6 +6,7 @@ import com.iyeong.portfolio.api.certification.dto.CertificationDto;
 import com.iyeong.portfolio.api.certification.service.CertificationApiService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,17 +21,18 @@ public class CertificationController {
 
     // 1. 자격증 추가 (POST)
     @PostMapping
-    public ResponseEntity<ApiResponse<Void>> createStack(@Valid @RequestBody CertificationDto.Request request) {
+    public ResponseEntity<ApiResponse<CertificationDto.Response>> createStack(@Valid @RequestBody CertificationDto.Request request) {
 
-        certificationApiService.createStack(request);
-        return ResponseEntity.ok(ApiResponse.success("스택이 성공적으로 등록되었습니다.", null));
+        CertificationDto.Response resData = certificationApiService.createStack(request);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success("자격증이 성공적으로 등록되었습니다.", resData));
     }
 
     // 2. 자격증 전체 조회 (GET)
     @GetMapping
     public ResponseEntity<ApiResponse<List<CertificationDto.Response>>> getAllCertifications() {
         List<CertificationDto.Response> stacks = certificationApiService.getAllCertifications();
-        return ResponseEntity.ok(ApiResponse.success("스택 목록 조회 성공", stacks));
+        return ResponseEntity.ok(ApiResponse.success("자격증이 목록 조회 성공", stacks));
     }
 
     // 3. 자격증 수정 (PUT)
@@ -49,10 +51,10 @@ public class CertificationController {
     }
 
     // 4. 자격증 삭제 (DELETE)
-    @DeleteMapping("/{stackId}")
+    @DeleteMapping("/{certificationId}")
     public ResponseEntity<ApiResponse<Void>> deleteStack(@Valid @PathVariable Long stackId) {
         certificationApiService.deleteStack(stackId);
-        return ResponseEntity.ok(ApiResponse.success("스택이 성공적으로 삭제되었습니다.", null));
+        return ResponseEntity.ok(ApiResponse.success("자격증이 성공적으로 삭제되었습니다.", null));
     }
 
 }

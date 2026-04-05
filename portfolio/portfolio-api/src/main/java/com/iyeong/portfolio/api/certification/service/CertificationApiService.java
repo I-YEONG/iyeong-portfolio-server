@@ -1,8 +1,10 @@
 package com.iyeong.portfolio.api.certification.service;
 
 import com.iyeong.portfolio.api.certification.dto.CertificationDto;
+import com.iyeong.portfolio.api.stack.dto.StackDto;
 import com.iyeong.portfolio.domain.certification.entity.PfCertification;
 import com.iyeong.portfolio.domain.certification.service.CertificationDomainService;
+import com.iyeong.portfolio.domain.stack.entity.PfStack;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,7 @@ public class CertificationApiService {
     private final CertificationDomainService certificationDomainService;
 
     // post
-    public void createStack(CertificationDto.Request request) {
+    public CertificationDto.Response createStack(CertificationDto.Request request) {
         PfCertification pfCertification = PfCertification.builder()
                 .name(request.getName())
                 .organization(request.getOrganization())
@@ -25,7 +27,16 @@ public class CertificationApiService {
                 .logoUrl(request.getLogoUrl())
                 .build();
 
-        certificationDomainService.saveCertification(pfCertification);
+        PfCertification savedStack = certificationDomainService.saveCertification(pfCertification);
+
+        return new CertificationDto.Response(
+                savedStack.getId(),
+                savedStack.getName(),
+                savedStack.getOrganization(),
+                savedStack.getStatus(),
+                savedStack.getAcquiredDate(),
+                savedStack.getLogoUrl()
+        );
     }
 
     // get

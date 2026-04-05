@@ -3,6 +3,7 @@ package com.iyeong.portfolio.api.stack.controller;
 import com.iyeong.portfolio.api.stack.service.StackApiService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.iyeong.portfolio.api.stack.dto.StackDto;
@@ -19,10 +20,11 @@ public class StackController {
 
     // 1. 스택 추가 (POST)
     @PostMapping
-    public ResponseEntity<ApiResponse<Void>> createStack(@Valid @RequestBody StackDto.Request request) {
+    public ResponseEntity<ApiResponse<StackDto.Response>> createStack(@Valid @RequestBody StackDto.Request request) {
 
-        stackApiService.createStack(request);
-        return ResponseEntity.ok(ApiResponse.success("스택이 성공적으로 등록되었습니다.", null));
+        StackDto.Response resData = stackApiService.createStack(request);
+//        return ResponseEntity.ok(ApiResponse.success("스택이 성공적으로 등록되었습니다.", null));
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success("스택이 성공적으로 등록되었습니다.", resData));
     }
 
     // 2. 스택 전체 조회 (GET)

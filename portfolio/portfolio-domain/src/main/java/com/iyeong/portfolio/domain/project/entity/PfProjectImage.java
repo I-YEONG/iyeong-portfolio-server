@@ -1,10 +1,13 @@
 package com.iyeong.portfolio.domain.project.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
 @Getter
 @Entity
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Table(name = "pf_project_image")
 public class PfProjectImage {
 
@@ -26,13 +29,9 @@ public class PfProjectImage {
     @Column(nullable = true)
     private Integer sortOrder = null;
 
-
-    protected PfProjectImage(){}
-
-    public PfProjectImage(PfProject project, String imageUrl, Boolean isMain, Integer sortOrder){
+    //.assignProject(this) 메서드
+    public void assignProject(PfProject project) {
         this.project = project;
-        this.imageUrl = imageUrl;
-        this.isMain = isMain;
-        this.sortOrder = sortOrder;
     }
+
 }

@@ -1,12 +1,15 @@
 package com.iyeong.portfolio.domain.project.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
-    @Getter
-    @Entity
-    @Table(name = "pf_project_tag")
-    public class PfProjectTag {
+@Getter
+@Entity
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Table(name = "pf_project_tag")
+public class PfProjectTag {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,17 +21,16 @@ import lombok.Getter;
         private PfProject project;
 
         public enum TagType {
-            FULL, FRONT, BACK, TEAM_LEADER
+            FULL, FRONT, BACK, TEAM_LEADER, OPS, STORE
         }
 
         @Enumerated(EnumType.STRING)
         @Column(nullable = false)
         private TagType tag;
 
-        protected PfProjectTag() {}
-
-        public PfProjectTag(TagType tag, PfProject project) {
-            this.tag = tag;
+        //.assignProject(this) 메서드
+        public void assignProject(PfProject project) {
             this.project = project;
         }
-    }
+
+}

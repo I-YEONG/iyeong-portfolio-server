@@ -21,7 +21,7 @@ public class ExperienceDto {
         @NotBlank(message = "타이틀을 비워둘 수 없습니다.")
         private String title;
 
-        @Pattern(regexp = "^(해커톤|강의|동아리|프로젝트|개인|알바|인턴)$", message = "카테고리는 [ 해커톤, 강의, 동아리, 프로젝트, 개인, 알바, 인턴 ] 중 하나여야 합니다.")
+        @Pattern(regexp = "^(해커톤|강의|동아리|프로젝트|개인|알바|인턴|수상)$", message = "카테고리는 [ 해커톤, 강의, 동아리, 프로젝트, 개인, 알바, 인턴 ] 중 하나여야 합니다.")
         @NotBlank(message = "타입은 비워둘 수 비워둘 수 없습니다.")
         private String type;
 

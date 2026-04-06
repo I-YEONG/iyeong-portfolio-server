@@ -16,6 +16,7 @@ public class PfExperience {
     // type 열거형 정의
     public enum ActivityType {
         해커톤,
+        수상,
         강의,
         동아리,
         프로젝트,
@@ -34,7 +35,7 @@ public class PfExperience {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ActivityType type; // [ 해커톤, 강의, 동아리, 프로젝트, 개인, 알바, 인턴 ]
+    private ActivityType type; // [ 해커톤, 강의, 동아리, 프로젝트, 개인, 알바, 인턴, 수상 ]
 
     // TEXT
     @Column(nullable = false, columnDefinition = "TEXT")

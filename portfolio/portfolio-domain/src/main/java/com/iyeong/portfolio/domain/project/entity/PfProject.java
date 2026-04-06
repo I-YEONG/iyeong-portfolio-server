@@ -1,7 +1,7 @@
 package com.iyeong.portfolio.domain.project.entity;
 
 import jakarta.persistence.*; // DB 연결 도구 불러오기
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -9,6 +9,9 @@ import java.util.List;
 
 @Getter
 @Entity
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Table(name = "pf_project") // DB에 "pf_project"으로 생성
 public class PfProject {
 
@@ -59,36 +62,16 @@ public class PfProject {
     @Column(nullable = true)
     private String submitContest;
 
-
-    // 관계 설정 - Stack
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PfProjectStack> stacks = new ArrayList<>();
-
-    // 관계 설정 - Tag
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PfProjectTag> tags = new ArrayList<>();
-
-    // 관계 설정 - image
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PfProjectImage> images = new ArrayList<>();
-
-    // 관계 설정 - detail
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PfProjectDetail> details = new ArrayList<>();
-
-
-    protected PfProject(){};
-
-    public PfProject(String name,String subTitle, String description, String statusStr, String url, String gitUrl, String pdfUrl, String domain, Integer teamSize, LocalDate startDate, LocalDate endDate, String submitContest){
+    /////////////////////////////////////
+    ///  업데이트 로직
+    /////////////////////////////////////
+    public void updateInfo(String name, String subTitle, String description, ProjectStatus status,
+                           String url, String gitUrl, String pdfUrl, String domain,
+                           Integer teamSize, LocalDate startDate, LocalDate endDate, String submitContest) {
         this.name = name;
         this.subTitle = subTitle;
         this.description = description;
-
-        if (statusStr != null) {
-            String formattedStatus = statusStr.replace(" ", "_");
-            this.status = ProjectStatus.valueOf(formattedStatus);
-        }
-
+        this.status = status;
         this.url = url;
         this.gitUrl = gitUrl;
         this.pdfUrl = pdfUrl;
@@ -99,24 +82,78 @@ public class PfProject {
         this.submitContest = submitContest;
     }
 
-    // 연관관계 메서드 - stack
-    public void addStack(PfProjectStack stack) {
-        this.stacks.add(stack);
+    // 🌟 1. 스택 리스트 교체
+    public void updateStacks(List<PfProjectStack> newStacks) {
+        this.stacks.clear(); // 기존 스택들을 싹 비우고 (고아 객체로 만들어 삭제)
+        newStacks.forEach(this::addStack); // 새로 들어온 스택들을 하나씩 부모 품에 연결!
     }
 
-    // 연관관계 메서드 - tag
+    // 🌟 2. 태그 리스트 교체
+    public void updateTags(List<PfProjectTag> newTags) {
+        this.tags.clear();
+        newTags.forEach(this::addTag);
+    }
+
+    // 🌟 3. 이미지 리스트 교체
+    public void updateImages(List<PfProjectImage> newImages) {
+        this.images.clear();
+        newImages.forEach(this::addImage);
+    }
+
+    // 🌟 4. 디테일 리스트 교체
+    public void updateDetails(List<PfProjectDetail> newDetails) {
+        this.details.clear();
+        newDetails.forEach(this::addDetail);
+    }
+
+
+    /////////////////////////////////////
+    ///  관계 설정
+    /////////////////////////////////////
+
+    // 관계 설정 - Stack
+    @Builder.Default
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PfProjectStack> stacks = new ArrayList<>();
+
+    // 관계 설정 - Tag
+    @Builder.Default
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PfProjectTag> tags = new ArrayList<>();
+
+    // 관계 설정 - image
+    @Builder.Default
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PfProjectImage> images = new ArrayList<>();
+
+    // 관계 설정 - detail
+    @Builder.Default
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PfProjectDetail> details = new ArrayList<>();
+
+
+    /////////////////////////////////////
+    ///  연관 관계 메서드
+    /////////////////////////////////////
+
+    public void addStack(PfProjectStack stack) {
+        this.stacks.add(stack);    // 내 데이터에 자식을 넣는다.
+        stack.assignProject(this); // 자식에게도 부모 ID를 주입한다
+    }
+
     public void addTag(PfProjectTag tag) {
         this.tags.add(tag);
+        tag.assignProject(this);
     }
 
-    // 연관관계 메서드 - image
     public void addImage(PfProjectImage image) {
         this.images.add(image);
+        image.assignProject(this);
     }
 
-    // 연관관계 메서드 - image
     public void addDetail(PfProjectDetail detail) {
         this.details.add(detail);
+        detail.assignProject(this);
     }
 
 

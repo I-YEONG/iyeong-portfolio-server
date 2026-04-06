@@ -1,10 +1,13 @@
 package com.iyeong.portfolio.domain.project.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
 @Getter
 @Entity
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Table(name = "pf_project_stack")
 public class PfProjectStack {
 
@@ -30,10 +33,8 @@ public class PfProjectStack {
     @Column(nullable = false)
     private StackType type;
 
-    protected PfProjectStack() {}
-
-    public PfProjectStack(StackType type, PfProject project) {
-        this.type = type;
+    //.assignProject(this) 메서드
+    public void assignProject(PfProject project) {
         this.project = project;
     }
 }

@@ -1,11 +1,14 @@
 package com.iyeong.portfolio.domain.project.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
 @Getter
 @Entity
-@Table(name = "pf_project_image")
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Table(name = "pf_project_detail")
 public class PfProjectDetail {
 
     @Id
@@ -32,17 +35,17 @@ public class PfProjectDetail {
     @Column(columnDefinition = "TEXT")
     private String feel; // 느낀 & 배운 점
 
-
-    protected PfProjectDetail(){}
-
-    public PfProjectDetail(PfProject project, String intention, String planning, String stackDesc, String teamRoles, String feel){
+    //.assignProject(this) 메서드
+    public void assignProject(PfProject project) {
         this.project = project;
+    }
+
+    // PfProjectDetail.java 내부
+    public void updateDetailInfo(String intention, String planning, String stackDesc, String teamRoles, String feel) {
         this.intention = intention;
         this.planning = planning;
         this.stackDesc = stackDesc;
         this.teamRoles = teamRoles;
         this.feel = feel;
-
-
     }
 }

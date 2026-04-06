@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface PfCertificationRepository extends JpaRepository<PfCertification, Long> {
     // 기본적인 CRUD(저장, 조회, 수정, 삭제) 기능이 이미 JpaRepository 안에 포함
     boolean existsByName(String name);
+    // status가 true인 것의 개수를 셉니다.
+    long countByStatusTrue();
 }

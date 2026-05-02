@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController // JSON 형태로 응답하는 컨트롤러
 @RequiredArgsConstructor
-@RequestMapping("/api/certification")
+@RequestMapping("/api/portfolio/certification")
 public class CertificationController {
 
     private final CertificationApiService certificationApiService;

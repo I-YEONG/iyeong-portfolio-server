@@ -22,12 +22,35 @@ public class StackDomainService {
         if (stackRepository.existsByName(pfStack.getName())) {
             throw new BaseException(400, "이미 등록된 스택 이름입니다.");
         }
-        
+
         return stackRepository.save(pfStack);
     }
 
     public List<PfStack> getAllStacks() {
-        return stackRepository.findAll();
+//        return stackRepository.findAll();
+        return stackRepository.findAllByOrderBySortOrderAsc();
+    }
+
+    // 수정 (PUT)
+    @Transactional
+    public void updateStack(Long id, PfStack updateParam) {
+        // 1. 기존 데이터가 있는지 찾아보고 없으면 에러!
+        PfStack stack = stackRepository.findById(id)
+                .orElseThrow(() -> new BaseException(404, "존재하지 않는 스택 번호입니다."));
+
+        // 2. 이름을 바꿀 건데, 그 바꿀 이름이 이미 다른 곳에서 쓰이고 있다면 에러!
+        if (!stack.getName().equals(updateParam.getName()) && stackRepository.existsByName(updateParam.getName())) {
+            throw new BaseException(400, "이미 등록된 스택 이름입니다.");
+        }
+
+        // 3. 문제 없으면 엔티티 내용물 업데이트 (Dirty Checking으로 인해 자동 업데이트됨)
+        stack.update(
+                updateParam.getName(),
+                updateParam.getCategory(),
+                updateParam.getExpertise(),
+                updateParam.getProficiency(),
+                updateParam.getSortOrder()
+        );
     }
 
     // 삭제

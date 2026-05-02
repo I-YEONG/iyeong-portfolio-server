@@ -37,4 +37,14 @@ public class PfStack {
     @Column(nullable = false)
     private Integer proficiency; // [ 0 ~ 100 ]
 
+    @Column(nullable = false)
+    private Integer sortOrder; // 표시 준서
+
+    public void update(String name, CategoryList category, ExpertiseList expertise, Integer proficiency, Integer sortOrder) {
+        this.name = name;
+        this.category = category;
+        this.expertise = expertise;
+        this.proficiency = proficiency;
+        this.sortOrder = sortOrder;
+    }
 }

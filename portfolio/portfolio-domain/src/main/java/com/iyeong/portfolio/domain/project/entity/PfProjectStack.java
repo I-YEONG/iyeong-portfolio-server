@@ -26,7 +26,7 @@ public class PfProjectStack {
         // back
         SEQUELIZE, SPRING_BOOT, POSTMAN, POSTGRES, MYSQL,
         // etc
-        DOCKER, GITHUB, PLAY_STORE, RAILWAY, VERCEL
+        DOCKER, GITHUB, PLAY_STORE, RAILWAY, VERCEL, AWS
     }
 
     @Enumerated(EnumType.STRING)

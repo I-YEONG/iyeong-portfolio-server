@@ -22,6 +22,7 @@ public class StackApiService {
                 .category(PfStack.CategoryList.valueOf(request.getCategory()))
                 .expertise(PfStack.ExpertiseList.valueOf(request.getExpertise()))
                 .proficiency(request.getProficiency())
+                .sortOrder(request.getSortOrder())
                 .build();
 
         PfStack savedStack =  stackDomainService.saveStack(pfStack);
@@ -31,7 +32,8 @@ public class StackApiService {
                 savedStack.getName(),
                 savedStack.getCategory().name(),
                 savedStack.getExpertise().name(),
-                savedStack.getProficiency()
+                savedStack.getProficiency(),
+                savedStack.getSortOrder()
         );
     }
 
@@ -47,9 +49,25 @@ public class StackApiService {
                         stack.getName(),
                         stack.getCategory().name(),
                         stack.getExpertise().name(),
-                        stack.getProficiency()
+                        stack.getProficiency(),
+                        stack.getSortOrder()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    // put
+    public void updateStack(StackDto.UpdateRequest request) {
+        // 프론트에서 온 데이터를 토대로 수정용 엔티티 껍데기를 만듭니다.
+        PfStack updateParam = PfStack.builder()
+                .name(request.getName())
+                .category(PfStack.CategoryList.valueOf(request.getCategory()))
+                .expertise(PfStack.ExpertiseList.valueOf(request.getExpertise()))
+                .proficiency(request.getProficiency())
+                .sortOrder(request.getSortOrder())
+                .build();
+
+        // 도메인 서비스로 넘겨서 진짜 업데이트를 수행합니다.
+        stackDomainService.updateStack(request.getId(), updateParam);
     }
 
     // delete

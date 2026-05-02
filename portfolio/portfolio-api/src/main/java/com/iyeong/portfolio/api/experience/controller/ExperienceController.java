@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController // JSON 형태로 응답하는 컨트롤러
 @RequiredArgsConstructor
-@RequestMapping("/api/experience")
+@RequestMapping("/api/portfolio/experience")
 public class ExperienceController {
 
     private final ExperienceApiService experienceApiService;

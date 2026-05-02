@@ -3,17 +3,20 @@ spring:
     url: ${DB_URL}
     username: ${DB_USER}
     password: ${DB_PASSWORD}
-    driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true
+    open-in-view: false
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
+  security:
+    user:
+      name: ${TEST_ADMIN_ID}      # 테스트할 때 쓸 아이디 (원하는 대로 변경 가능)
+      password: ${TEST_ADMIN_PW}   # 테스트할 때 쓸 비밀번호 (원하는 대로 변경 가능)
 
-# Supabase 설정 (별도 계층)
+# Superbase 설정 (별도 계층)
 supabase:
   url: "https://hiqyqzmyoxafmrrspntv.supabase.co"
   service-key: ${DB_KEY}

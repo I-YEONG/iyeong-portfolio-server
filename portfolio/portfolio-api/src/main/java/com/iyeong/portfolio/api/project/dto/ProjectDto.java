@@ -1,5 +1,6 @@
 package com.iyeong.portfolio.api.project.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -18,16 +19,18 @@ public class ProjectDto {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
+    @Schema(name = "ProjectImageRequest") // 스키마 추가
     public static class ImageReq {
         @NotBlank private String imageUrl;
         private Boolean isMain;
         private Integer sortOrder;
     }
 
-    // 디테일 생성 Req
+    // 디테일 생성 Req (이전의 ProjectDetailDto 역할을 여기서 수행)
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
+    @Schema(name = "ProjectDetailRequest") // 스키마 추가
     public static class DetailReq {
         private String intention;
         private String planning;
@@ -40,6 +43,7 @@ public class ProjectDto {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
+    @Schema(name = "ProjectRequest", description = "프로젝트 생성 요청 DTO") // 스키마 추가
     public static class Request {
         @NotBlank private String name;
         @NotBlank private String subTitle;
@@ -54,11 +58,11 @@ public class ProjectDto {
         @NotNull private LocalDate endDate;
         private String submitContest;
 
-        // 자식 데이터들
-        @Pattern(regexp = "^(REACT|NEXT_JS|VUE|SEQUELIZE|SPRING_BOOT|POSTMAN|POSTGRES|MYSQL|DOCKER|GITHUB|PLAY_STORE|RAILWAY|VERCEL)$", message = "stacks는 REACT, NEXT_JS, VUE, SEQUELIZE, SPRING_BOOT, POSTMAN, POSTGRES, MYSQL, DOCKER, GITHUB, PLAY_STORE, RAILWAY, VERCEL 중 하나여야 합니다.")
-        private List<String> stacks; // ex: ["REACT", "SPRING_BOOT"]
-        @Pattern(regexp = "^(FULL|FRONT|BACK|TEAM_LEADER|OPS|STORE)$", message = "태그는 FULL, FRONT, BACK, TEAM_LEADER, OPS, STORE 중 하나여야 합니다.")
-        private List<String> tags;   // ex: ["FRONT", "BACK"]
+        // 🚨 런타임 에러 해결: @Pattern을 List 제네릭 내부로 이동!
+        private List<@Pattern(regexp = "^(REACT|NEXT_JS|VUE|SEQUELIZE|SPRING_BOOT|POSTMAN|POSTGRES|MYSQL|DOCKER|GITHUB|PLAY_STORE|RAILWAY|VERCEL)$", message = "stacks는 정해진 값 중 하나여야 합니다.") String> stacks;
+
+        private List<@Pattern(regexp = "^(FULL|FRONT|BACK|TEAM_LEADER|OPS|STORE)$", message = "태그는 FULL, FRONT, BACK, TEAM_LEADER, OPS, STORE 중 하나여야 합니다.") String> tags;
+
         private List<ImageReq> images;
         private List<DetailReq> details;
     }
@@ -66,6 +70,7 @@ public class ProjectDto {
     // Res
     @Getter
     @NoArgsConstructor
+    @Schema(name = "ProjectResponse", description = "프로젝트 응답 DTO") // 스키마 추가
     public static class Response {
         private Long id;
         private String name;
@@ -86,6 +91,7 @@ public class ProjectDto {
         private List<DetailReq> details;
 
         public Response(Long id, String name, String subTitle, String description, String status, String url, String gitUrl, String pdfUrl, String domain, Integer teamSize, LocalDate startDate, LocalDate endDate, String submitContest, List<String> stacks, List<String> tags, List<ImageReq> images, List<DetailReq> details) {
+            // ... 기존 생성자 내용과 동일 ...
             this.id = id;
             this.name = name;
             this.subTitle = subTitle;
@@ -109,7 +115,8 @@ public class ProjectDto {
     // --- [3. 수정 요청 (UpdateRequest)] ---
     @Getter
     @NoArgsConstructor
-    public static class UpdateRequest extends Request { // Request 상자를 상속받아 재사용!
+    @Schema(name = "ProjectUpdateRequest", description = "프로젝트 수정 요청 DTO") // 스키마 추가
+    public static class UpdateRequest extends Request {
         @NotNull(message = "프로젝트 ID는 필수입니다.")
         private Long id;
     }

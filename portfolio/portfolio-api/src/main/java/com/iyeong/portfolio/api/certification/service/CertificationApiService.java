@@ -1,10 +1,8 @@
 package com.iyeong.portfolio.api.certification.service;
 
 import com.iyeong.portfolio.api.certification.dto.CertificationDto;
-import com.iyeong.portfolio.api.stack.dto.StackDto;
 import com.iyeong.portfolio.domain.certification.entity.PfCertification;
 import com.iyeong.portfolio.domain.certification.service.CertificationDomainService;
-import com.iyeong.portfolio.domain.stack.entity.PfStack;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +15,10 @@ public class CertificationApiService {
 
     private final CertificationDomainService certificationDomainService;
 
-    // post
-    public CertificationDto.Response createStack(CertificationDto.Request request) {
+    // post (이름 변경 및 type 추가)
+    public CertificationDto.Response createCertification(CertificationDto.Request request) {
         PfCertification pfCertification = PfCertification.builder()
+                .type(request.getType()) // 🌟 추가
                 .name(request.getName())
                 .organization(request.getOrganization())
                 .status(request.getStatus())
@@ -27,27 +26,27 @@ public class CertificationApiService {
                 .logoUrl(request.getLogoUrl())
                 .build();
 
-        PfCertification savedStack = certificationDomainService.saveCertification(pfCertification);
+        PfCertification savedCertification = certificationDomainService.saveCertification(pfCertification);
 
         return new CertificationDto.Response(
-                savedStack.getId(),
-                savedStack.getName(),
-                savedStack.getOrganization(),
-                savedStack.getStatus(),
-                savedStack.getAcquiredDate(),
-                savedStack.getLogoUrl()
+                savedCertification.getId(),
+                savedCertification.getType(), // 🌟 추가
+                savedCertification.getName(),
+                savedCertification.getOrganization(),
+                savedCertification.getStatus(),
+                savedCertification.getAcquiredDate(),
+                savedCertification.getLogoUrl()
         );
     }
 
     // get
     public List<CertificationDto.Response> getAllCertifications() {
-        // 도메인 서비스에서 전체 스택(엔티티)을 가져옵니다.
         List<PfCertification> certificationList = certificationDomainService.getAllCertifications();
 
-        // 엔티티를 프론트엔드가 요구하는 DTO 형태로 변환해서 돌려줍니다.
         return certificationList.stream()
                 .map(certification -> new CertificationDto.Response(
                         certification.getId(),
+                        certification.getType(), // 🌟 추가
                         certification.getName(),
                         certification.getOrganization(),
                         certification.getStatus(),
@@ -59,18 +58,20 @@ public class CertificationApiService {
 
     // update
     public void updateCertification(CertificationDto.UpdateRequest request) {
+        // 🌟 도메인 서비스의 파라미터에 type 추가 전달
         certificationDomainService.updateCertification(
                 request.getId(),
                 request.getName(),
                 request.getOrganization(),
                 request.getStatus(),
                 request.getAcquiredDate(),
-                request.getLogoUrl()
+                request.getLogoUrl(),
+                request.getType() // 🌟 엔티티 update 파라미터 순서에 맞게 추가
         );
     }
 
     // delete
-    public void deleteStack(Long stackId) {
-        certificationDomainService.deleteCertification(stackId);
+    public void deleteCertification(Long certificationId) { // 🌟 변수명 stackId -> certificationId 변경
+        certificationDomainService.deleteCertification(certificationId);
     }
 }

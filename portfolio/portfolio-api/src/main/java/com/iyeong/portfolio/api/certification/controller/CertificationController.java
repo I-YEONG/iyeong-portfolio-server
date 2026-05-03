@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController // JSON 형태로 응답하는 컨트롤러
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/portfolio/certification")
 public class CertificationController {
@@ -21,18 +21,16 @@ public class CertificationController {
 
     // 1. 자격증 추가 (POST)
     @PostMapping
-    public ResponseEntity<ApiResponse<CertificationDto.Response>> createStack(@Valid @RequestBody CertificationDto.Request request) {
-
-        CertificationDto.Response resData = certificationApiService.createStack(request);
-
+    public ResponseEntity<ApiResponse<CertificationDto.Response>> createCertification(@Valid @RequestBody CertificationDto.Request request) { // 🌟 이름 변경
+        CertificationDto.Response resData = certificationApiService.createCertification(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success("자격증이 성공적으로 등록되었습니다.", resData));
     }
 
     // 2. 자격증 전체 조회 (GET)
     @GetMapping
     public ResponseEntity<ApiResponse<List<CertificationDto.Response>>> getAllCertifications() {
-        List<CertificationDto.Response> stacks = certificationApiService.getAllCertifications();
-        return ResponseEntity.ok(ApiResponse.success("자격증이 목록 조회 성공", stacks));
+        List<CertificationDto.Response> certifications = certificationApiService.getAllCertifications(); // 🌟 변수명 변경
+        return ResponseEntity.ok(ApiResponse.success("자격증 목록 조회 성공", certifications));
     }
 
     // 3. 자격증 수정 (PUT)
@@ -41,7 +39,6 @@ public class CertificationController {
             @PathVariable Long certificationId,
             @Valid @RequestBody CertificationDto.UpdateRequest request) {
 
-        // 파라미터 !== Body.id == 에러
         if (!certificationId.equals(request.getId())) {
             throw new BaseException(400, "경로의 ID와 요청 데이터의 ID가 일치하지 않습니다.");
         }
@@ -52,9 +49,8 @@ public class CertificationController {
 
     // 4. 자격증 삭제 (DELETE)
     @DeleteMapping("/{certificationId}")
-    public ResponseEntity<ApiResponse<Void>> deleteStack(@Valid @PathVariable Long stackId) {
-        certificationApiService.deleteStack(stackId);
+    public ResponseEntity<ApiResponse<Void>> deleteCertification(@PathVariable Long certificationId) {
+        certificationApiService.deleteCertification(certificationId);
         return ResponseEntity.ok(ApiResponse.success("자격증이 성공적으로 삭제되었습니다.", null));
     }
-
 }

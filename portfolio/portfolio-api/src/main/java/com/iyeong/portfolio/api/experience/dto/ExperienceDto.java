@@ -1,5 +1,6 @@
 package com.iyeong.portfolio.api.experience.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -10,19 +11,17 @@ import java.time.LocalDate;
 @Getter
 public class ExperienceDto {
 
-    // 1. 프론트엔드 -> 서버 (새로운 스택을 등록할 때 받는 상자)
+    // 1. 프론트엔드 -> 서버 (새로운 경험을 등록할 때 받는 상자)
+    @Schema(name = "ExperienceRequest", description = "경험 생성 요청 DTO")
     @Getter
     public static class Request {
-//        @Min(value = 0, message = "숙련도는 0 이상이어야 합니다.")
-//        @Max(value = 100, message = "숙련도는 100 이하여야 합니다.")
-//        @NotBlank(message = "스택 이름은 필수입니다.") // 비어있으면 안 됨
-        //@NotNull ^^는 문자열만, 이거는 그외,
 
         @NotBlank(message = "타이틀을 비워둘 수 없습니다.")
         private String title;
 
-        @Pattern(regexp = "^(해커톤|강의|동아리|프로젝트|개인|알바|인턴|수상)$", message = "카테고리는 [ 해커톤, 강의, 동아리, 프로젝트, 개인, 알바, 인턴 ] 중 하나여야 합니다.")
-        @NotBlank(message = "타입은 비워둘 수 비워둘 수 없습니다.")
+        // 정규식과 메시지에 '수상' 포함, 오타 수정
+        @Pattern(regexp = "^(해커톤|강의|동아리|프로젝트|개인|알바|인턴|수상)$", message = "카테고리는 [ 해커톤, 강의, 동아리, 프로젝트, 개인, 알바, 인턴, 수상 ] 중 하나여야 합니다.")
+        @NotBlank(message = "타입은 비워둘 수 없습니다.")
         private String type;
 
         @NotBlank(message = "디테일 내용을 비워둘 수 없습니다.")
@@ -31,13 +30,14 @@ public class ExperienceDto {
         @NotNull(message = "시작 날짜를 비워둘 수 없습니다.")
         private LocalDate startDate;
 
-        @NotNull(message = "종료 날짜 비워둘 수 없습니다.")
+        @NotNull(message = "종료 날짜를 비워둘 수 없습니다.")
         private LocalDate endDate;
 
         private String note;
     }
 
-    // 2. 서버 -> 프론트엔드 (DB에서 스택을 꺼내서 프론트로 보낼 때 쓰는 상자)
+    // 2. 서버 -> 프론트엔드 (DB에서 경험을 꺼내서 프론트로 보낼 때 쓰는 상자)
+    @Schema(name = "ExperienceResponse", description = "경험 응답 DTO")
     @Getter
     public static class Response {
         private Long id;
@@ -61,16 +61,19 @@ public class ExperienceDto {
     }
 
     // 3. 수정용 상자 (Update Request)
+    @Schema(name = "ExperienceUpdateRequest", description = "경험 수정 요청 DTO")
     @Getter
     public static class UpdateRequest {
-        @NotNull(message = "수정할 Data ID는 필수입니다.")
+
+        @NotNull(message = "수정할 데이터의 ID는 필수입니다.")
         private Long id;
 
         @NotBlank(message = "타이틀을 비워둘 수 없습니다.")
         private String title;
 
-        @Pattern(regexp = "^(해커톤|강의|동아리|프로젝트|개인|알바|인턴)$", message = "카테고리는 [ 해커톤, 강의, 동아리, 프로젝트, 개인, 알바, 인턴 ] 중 하나여야 합니다.")
-        @NotBlank(message = "타입은 비워둘 수 비워둘 수 없습니다.")
+        // Update 쪽에도 '수상' 추가 및 오타 수정
+        @Pattern(regexp = "^(해커톤|강의|동아리|프로젝트|개인|알바|인턴|수상)$", message = "카테고리는 [ 해커톤, 강의, 동아리, 프로젝트, 개인, 알바, 인턴, 수상 ] 중 하나여야 합니다.")
+        @NotBlank(message = "타입은 비워둘 수 없습니다.")
         private String type;
 
         @NotBlank(message = "디테일 내용을 비워둘 수 없습니다.")
@@ -79,7 +82,7 @@ public class ExperienceDto {
         @NotNull(message = "시작 날짜를 비워둘 수 없습니다.")
         private LocalDate startDate;
 
-        @NotNull(message = "종료 날짜 비워둘 수 없습니다.")
+        @NotNull(message = "종료 날짜를 비워둘 수 없습니다.")
         private LocalDate endDate;
 
         private String note;

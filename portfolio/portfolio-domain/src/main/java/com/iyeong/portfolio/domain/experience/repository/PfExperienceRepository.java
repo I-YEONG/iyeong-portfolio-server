@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface PfExperienceRepository extends JpaRepository<PfExperience, Long> {
     // 기본적인 CRUD(저장, 조회, 수정, 삭제) 기능이 이미 JpaRepository 안에 포함
     boolean existsByTitle(String title);
-    // type이 "수상" 또는 "강의"인 것의 개수를 셉니다.
-    long countByType(ActivityType type);
+
+    // 🌟 수정 완료: Type -> Types
+    // types 리스트 안에 해당 ActivityType이 포함되어 있는지 개수를 셉니다.
+    long countByTypes(ActivityType type);
 }

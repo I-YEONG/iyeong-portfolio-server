@@ -24,8 +24,10 @@ public class MainApiService {
     // 🌟 변경: 반환 타입을 OverviewData로 수정합니다.
     public MainOverviewDto.OverviewData getOverviewData() {
 
-        long awardCount = experienceRepository.countByType(ActivityType.수상);
-        long educationCount = experienceRepository.countByType(ActivityType.강의);
+        // 🌟 변경: countByType -> countByTypes 로 's' 추가!
+        long awardCount = experienceRepository.countByTypes(ActivityType.수상);
+        long educationCount = experienceRepository.countByTypes(ActivityType.강의);
+
         long projectCount = projectRepository.count();
         long qualificationCount = certificationRepository.countByStatusTrue();
         long playStoreCount = projectTagRepository.countByTag(TagType.STORE);

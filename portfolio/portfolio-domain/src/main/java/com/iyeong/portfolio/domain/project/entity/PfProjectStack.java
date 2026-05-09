@@ -1,10 +1,13 @@
-package com.iyeong.portfolio.domain.entity;
+package com.iyeong.portfolio.domain.project.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
 @Getter
 @Entity
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Table(name = "pf_project_stack")
 public class PfProjectStack {
 
@@ -23,17 +26,15 @@ public class PfProjectStack {
         // back
         SEQUELIZE, SPRING_BOOT, POSTMAN, POSTGRES, MYSQL,
         // etc
-        DOCKER, GITHUB, PLAY_STORE, RAILWAY, VERCEL
+        DOCKER, GITHUB, PLAY_STORE, RAILWAY, VERCEL, AWS
     }
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private StackType type;
 
-    protected PfProjectStack() {}
-
-    public PfProjectStack(StackType type, PfProject project) {
-        this.type = type;
+    //.assignProject(this) 메서드
+    public void assignProject(PfProject project) {
         this.project = project;
     }
 }

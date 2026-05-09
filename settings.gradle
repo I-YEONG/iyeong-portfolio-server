@@ -1,12 +1,9 @@
 rootProject.name = 'iyeong_portfolio_server'
 
-// 1. 공통 모듈
-include 'common'
+// 공통
+include 'common:common-core'
+include 'common:common-api'
 
-// 2. 포트폴리오 프로젝트 그룹 (이 콜론(:) 형식이 핵심입니다!)
-include 'portfolio:api'
-include 'portfolio:domain'
-
-// 💡 팁: 나중에 univnotice 추가 시
-// include 'univnotice:api'
-// include 'univnotice:domain'
+// 포트폴리오
+include 'portfolio:portfolio-api'
+include 'portfolio:portfolio-domain'
